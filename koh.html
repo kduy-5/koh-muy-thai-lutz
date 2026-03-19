@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KOH Muay Thai — Lutz, FL</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Barlow:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Logo-derived palette */
+  --forest:   #1e4a2a;   /* deep green */
+  --jungle:   #2d6b3a;   /* mid green */
+  --canopy:   #4a8c55;   /* light green */
+  --sunrise:  #d4600a;   /* deep orange */
+  --flame:    #e8841a;   /* mid orange */
+  --saffron:  #f0a830;   /* gold/yellow */
+  --cream:    #f5ede0;   /* warm white */
+  --parchment:#e8dcc8;   /* aged paper */
+  --black:    #0d0e0b;
+  --ink:      #141510;
+  --bark:     #1e1e18;
+  --charcoal: #2a2a22;
+  --stone:    #7a7a6a;
+  --white:    #faf6ef;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--cream);
+  font-family: 'Barlow', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ══════════════════════════════════════
+   THAI ORNAMENT UTILITIES
+══════════════════════════════════════ */
+.thai-rule {
+  display: flex; align-items: center; gap: 12px;
+  margin-bottom: 1.2rem;
+}
+.thai-rule::before,
+.thai-rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--sunrise), transparent);
+}
+.thai-rule-dot {
+  width: 6px; height: 6px;
+  background: var(--sunrise);
+  transform: rotate(45deg);
+  flex-shrink: 0;
+}
+
+.ornament-line {
+  display: flex; align-items: center; gap: 10px;
+}
+.ornament-line::before {
+  content: '';
+  width: 24px; height: 1px;
+  background: var(--sunrise);
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════
+   NAV
+══════════════════════════════════════ */
+nav {
+  position: fixed; top: 0; left: 0; width: 100%;
+  z-index: 200;
+  background: rgba(13,14,11,.96);
+  border-bottom: 1px solid rgba(212,96,10,.2);
+  backdrop-filter: blur(10px);
+  transition: background .3s;
+}
+.nav-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 5vw; height: 64px;
+  max-width: 1200px; margin: 0 auto;
+}
+.nav-logo-wrap {
+  display: flex; align-items: center; gap: 10px;
+}
+.nav-logo-img {
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.nav-logo-text {
+  font-family: 'Cinzel', serif;
+  font-size: .85rem; letter-spacing: .12em;
+  color: var(--cream); text-decoration: none;
+  line-height: 1.2;
+}
+.nav-logo-text span {
+  display: block;
+  font-size: .62rem; letter-spacing: .3em;
+  color: var(--sunrise); font-weight: 400;
+  font-family: 'Barlow Condensed', sans-serif;
+  text-transform: uppercase;
+}
+.nav-links {
+  display: flex; gap: 1.8rem; list-style: none;
+}
+.nav-links a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .7rem; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--stone); text-decoration: none;
+  transition: color .2s;
+}
+.nav-links a:hover { color: var(--saffron); }
+.nav-cta {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+  background: var(--sunrise); color: var(--white);
+  border: none; padding: .5rem 1.3rem;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background .2s;
+  white-space: nowrap;
+}
+.nav-cta:hover { background: var(--flame); }
+
+/* Mobile nav burger */
+.nav-burger {
+  display: none;
+  background: none; border: none;
+  cursor: pointer; padding: 4px;
+  flex-direction: column; gap: 5px;
+}
+.nav-burger span {
+  display: block; width: 24px; height: 2px;
+  background: var(--cream); border-radius: 2px;
+  transition: all .3s;
+}
+
+/* Mobile menu */
+.mobile-menu {
+  display: none;
+  position: fixed; top: 64px; left: 0; right: 0;
+  background: rgba(13,14,11,.98);
+  border-bottom: 1px solid rgba(212,96,10,.2);
+  z-index: 199; padding: 1.5rem 5vw 2rem;
+  transform: translateY(-10px); opacity: 0;
+  transition: transform .25s, opacity .25s;
+}
+.mobile-menu.open { transform: translateY(0); opacity: 1; display: block; }
+.mobile-menu ul { list-style: none; }
+.mobile-menu li { border-bottom: 1px solid rgba(255,255,255,.06); }
+.mobile-menu a {
+  display: block; padding: .9rem 0;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--cream); text-decoration: none;
+  transition: color .2s;
+}
+.mobile-menu a:hover { color: var(--saffron); }
+.mobile-menu .mobile-cta {
+  margin-top: 1.5rem;
+  display: block; text-align: center;
+  background: var(--sunrise); color: var(--white);
+  padding: .85rem; letter-spacing: .2em; text-transform: uppercase;
+  font-family: 'Barlow Condensed', sans-serif; font-size: .9rem;
+  border-radius: 2px; text-decoration: none;
+}
+
+@media (max-width: 768px) {
+  .nav-links, .nav-cta { display: none; }
+  .nav-burger { display: flex; }
+}
+
+/* ══════════════════════════════════════
+   HERO
+══════════════════════════════════════ */
+.hero {
+  min-height: 100svh;
+  position: relative;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+  padding-top: 64px;
+}
+
+/* Rich layered background evoking Thai temple/sunset */
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 30%, rgba(212,96,10,.22) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 60% at 20% 80%, rgba(30,74,42,.5) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 50% at 80% 75%, rgba(30,74,42,.4) 0%, transparent 50%),
+    linear-gradient(175deg, #110e08 0%, #0d130a 40%, #0a1208 70%, #0d0e0b 100%);
+}
+
+/* Subtle textile pattern overlay */
+.hero-pattern {
+  position: absolute; inset: 0; z-index: 1;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 8px,
+      rgba(212,96,10,.025) 8px,
+      rgba(212,96,10,.025) 9px
+    ),
+    repeating-linear-gradient(
+      -45deg,
+      transparent,
+      transparent 8px,
+      rgba(30,74,42,.025) 8px,
+      rgba(30,74,42,.025) 9px
+    );
+}
+
+/* Top border — thai temple gold trim */
+.hero-top-trim {
+  position: absolute; top: 64px; left: 0; right: 0; z-index: 3;
+  height: 3px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    var(--forest) 10%,
+    var(--saffron) 30%,
+    var(--flame) 50%,
+    var(--saffron) 70%,
+    var(--forest) 90%,
+    transparent 100%
+  );
+  opacity: .7;
+}
+
+/* Bottom wave */
+.hero-bottom {
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 3;
+}
+
+.hero-content {
+  position: relative; z-index: 5;
+  text-align: center;
+  padding: 3rem 5vw;
+  max-width: 860px;
+  width: 100%;
+}
+
+/* Logo lockup */
+.hero-logo-wrap {
+  display: flex; flex-direction: column; align-items: center;
+  margin-bottom: 2.5rem;
+  opacity: 0; animation: fadeDown .8s .1s forwards;
+}
+.hero-logo-img {
+  width: clamp(100px, 18vw, 150px);
+  height: clamp(100px, 18vw, 150px);
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid rgba(212,96,10,.35);
+  box-shadow:
+    0 0 0 6px rgba(212,96,10,.08),
+    0 0 40px rgba(212,96,10,.15),
+    0 0 80px rgba(30,74,42,.2);
+}
+.hero-logo-ornament {
+  margin-top: 1rem;
+  display: flex; align-items: center; gap: 8px;
+}
+.hero-logo-ornament::before,
+.hero-logo-ornament::after {
+  content: '';
+  width: 40px; height: 1px;
+  background: linear-gradient(to right, transparent, var(--saffron));
+}
+.hero-logo-ornament::after {
+  background: linear-gradient(to left, transparent, var(--saffron));
+}
+.hero-logo-ornament-gem {
+  width: 7px; height: 7px;
+  background: var(--saffron);
+  transform: rotate(45deg);
+}
+
+.hero-eyebrow {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .7rem; letter-spacing: .45em; text-transform: uppercase;
+  color: var(--saffron); margin-bottom: 1rem;
+  opacity: 0; animation: fadeDown .8s .25s forwards;
+}
+.hero-h1 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(3rem, 10vw, 7.5rem);
+  line-height: .95; letter-spacing: .04em;
+  color: var(--cream);
+  text-shadow: 0 2px 40px rgba(212,96,10,.3), 0 0 80px rgba(0,0,0,.8);
+  opacity: 0; animation: fadeDown .9s .4s forwards;
+}
+.hero-h1 .lutz-word {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-style: italic; font-weight: 400;
+  color: var(--saffron); font-size: .45em;
+  display: block; letter-spacing: .12em;
+  margin-top: .4rem;
+  text-shadow: 0 0 30px rgba(240,168,48,.4);
+}
+.hero-sub {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(.85rem, 2vw, 1.05rem);
+  letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(245,237,224,.5);
+  margin-top: 1.5rem;
+  opacity: 0; animation: fadeDown .8s .6s forwards;
+}
+.hero-divider {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; margin: 1.8rem auto;
+  opacity: 0; animation: fadeDown .8s .7s forwards;
+}
+.hero-divider::before, .hero-divider::after {
+  content: ''; width: clamp(30px, 8vw, 60px); height: 1px;
+  background: linear-gradient(to right, transparent, rgba(212,96,10,.6));
+}
+.hero-divider::after {
+  background: linear-gradient(to left, transparent, rgba(212,96,10,.6));
+}
+.hero-divider span {
+  font-size: .9rem; color: var(--sunrise); letter-spacing: .1em;
+}
+.hero-actions {
+  display: flex; gap: .8rem; justify-content: center; flex-wrap: wrap;
+  opacity: 0; animation: fadeDown .8s .85s forwards;
+}
+.btn-primary {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .78rem; letter-spacing: .22em; text-transform: uppercase;
+  background: var(--sunrise); color: var(--white);
+  border: none; padding: .9rem 2.2rem;
+  border-radius: 2px; cursor: pointer;
+  text-decoration: none; display: inline-block;
+  transition: background .2s, transform .15s;
+  border-bottom: 2px solid rgba(0,0,0,.3);
+}
+.btn-primary:hover { background: var(--flame); transform: translateY(-2px); }
+.btn-secondary {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .78rem; letter-spacing: .22em; text-transform: uppercase;
+  background: transparent; color: var(--parchment);
+  border: 1px solid rgba(245,237,224,.2);
+  padding: .9rem 2.2rem; border-radius: 2px;
+  cursor: pointer; text-decoration: none; display: inline-block;
+  transition: border-color .2s, color .2s;
+}
+.btn-secondary:hover { border-color: var(--saffron); color: var(--saffron); }
+
+@keyframes fadeDown { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeUp   { from { opacity:0; transform:translateY(20px); }  to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn   { to { opacity:1; } }
+
+/* ══════════════════════════════════════
+   TICKER
+══════════════════════════════════════ */
+.ticker {
+  background: linear-gradient(90deg, var(--forest), var(--jungle), var(--forest));
+  border-top: 1px solid rgba(240,168,48,.2);
+  border-bottom: 1px solid rgba(240,168,48,.2);
+  overflow: hidden; padding: .6rem 0;
+}
+.ticker-track {
+  display: flex; width: max-content;
+  animation: ticker 26s linear infinite;
+}
+.ticker-item {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .85rem; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--parchment); padding: 0 1.8rem; white-space: nowrap;
+  opacity: .85;
+}
+.ticker-item::before { content: '✦'; margin-right: 1.8rem; color: var(--saffron); opacity: .6; }
+@keyframes ticker { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+
+/* ══════════════════════════════════════
+   SECTION SHARED
+══════════════════════════════════════ */
+section { position: relative; }
+.section-inner {
+  max-width: 1100px; margin: 0 auto;
+  padding: 5.5rem 5vw;
+}
+.section-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .65rem; letter-spacing: .42em; text-transform: uppercase;
+  color: var(--sunrise);
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: .7rem;
+}
+.section-tag::before { content: ''; width: 20px; height: 1px; background: var(--sunrise); }
+.section-h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.8rem, 5vw, 3.2rem);
+  line-height: 1.1; letter-spacing: .06em;
+  color: var(--cream);
+}
+.section-h2 em {
+  font-style: normal;
+  color: var(--saffron);
+}
+
+/* ══════════════════════════════════════
+   ABOUT
+══════════════════════════════════════ */
+.about-section {
+  background: var(--ink);
+  border-top: 2px solid rgba(212,96,10,.15);
+}
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem; align-items: start;
+}
+.about-body {
+  font-size: .95rem; line-height: 1.95;
+  color: rgba(245,237,224,.6);
+  margin-top: 1.6rem;
+}
+.about-body strong { color: var(--cream); font-weight: 500; }
+.about-techniques {
+  margin-top: 1.8rem;
+  list-style: none;
+  display: grid; grid-template-columns: 1fr 1fr; gap: .55rem 1.5rem;
+}
+.about-techniques li {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .8rem; letter-spacing: .15em; text-transform: uppercase;
+  color: rgba(245,237,224,.5);
+  display: flex; align-items: center; gap: 8px;
+}
+.about-techniques li::before {
+  content: ''; flex-shrink: 0;
+  width: 4px; height: 4px;
+  background: var(--sunrise);
+  transform: rotate(45deg);
+}
+.about-cta { margin-top: 2rem; }
+
+/* Right panel */
+.about-panel {
+  background: var(--bark);
+  border: 1px solid rgba(212,96,10,.12);
+  border-top: 2px solid var(--sunrise);
+  padding: 2.5rem;
+}
+.about-stat { padding-bottom: 2rem; margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,.05); }
+.about-stat:last-of-type { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.about-stat-num {
+  font-family: 'Cinzel', serif;
+  font-size: 2.8rem; line-height: 1;
+  color: var(--cream);
+}
+.about-stat-num span { color: var(--sunrise); }
+.about-stat-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .72rem; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--stone); margin-top: .4rem;
+}
+.about-location {
+  margin-top: 2rem; padding-top: 2rem;
+  border-top: 1px solid rgba(255,255,255,.05);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .8rem; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--stone); line-height: 1.8;
+}
+.about-location strong { color: rgba(245,237,224,.7); }
+
+/* ══════════════════════════════════════
+   TRAINER
+══════════════════════════════════════ */
+.trainer-section {
+  background: var(--black);
+  border-top: 1px solid rgba(255,255,255,.04);
+}
+.trainer-card {
+  background: var(--bark);
+  border: 1px solid rgba(212,96,10,.12);
+  border-top: 3px solid var(--sunrise);
+  padding: 3rem;
+  position: relative; overflow: hidden;
+  max-width: 700px;
+  margin: 3rem auto 0;
+}
+.trainer-card::before {
+  content: '';
+  position: absolute; top: 0; right: 0;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle at top right, rgba(212,96,10,.06), transparent 70%);
+  pointer-events: none;
+}
+.trainer-role {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .65rem; letter-spacing: .4em; text-transform: uppercase;
+  color: var(--sunrise); margin-bottom: .5rem;
+}
+.trainer-name {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(2rem, 6vw, 3rem);
+  color: var(--cream); letter-spacing: .06em; line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+.trainer-divider {
+  width: 40px; height: 2px;
+  background: linear-gradient(90deg, var(--sunrise), transparent);
+  margin-bottom: 1.5rem;
+}
+.trainer-bio {
+  font-size: .95rem; line-height: 1.95;
+  color: rgba(245,237,224,.6);
+}
+.trainer-bio strong { color: var(--cream); font-weight: 500; }
+.trainer-num {
+  position: absolute; bottom: 1.5rem; right: 2rem;
+  font-family: 'Cinzel', serif; font-size: 5rem;
+  color: rgba(255,255,255,.025); line-height: 1;
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════
+   SCHEDULE
+══════════════════════════════════════ */
+.schedule-section {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,.04);
+}
+.schedule-top {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+  margin-bottom: 3.5rem;
+}
+.hours-label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .65rem; letter-spacing: .35em; text-transform: uppercase;
+  color: var(--sunrise); margin-bottom: 1.2rem;
+}
+.hours-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: .65rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.hours-row:last-child { border-bottom: none; }
+.hours-day {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .85rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--cream);
+}
+.hours-time {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .82rem; letter-spacing: .1em;
+  color: var(--stone);
+}
+.hours-time.closed { color: rgba(212,96,10,.5); }
+
+/* Class grid */
+.sched-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.sched-wrap::-webkit-scrollbar { height: 4px; }
+.sched-wrap::-webkit-scrollbar-track { background: var(--bark); }
+.sched-wrap::-webkit-scrollbar-thumb { background: var(--sunrise); border-radius: 2px; }
+.sched-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(130px, 1fr));
+  gap: 2px; min-width: 700px;
+  background: rgba(255,255,255,.04);
+}
+.sched-col { background: var(--bark); }
+.sched-header {
+  background: var(--charcoal);
+  border-bottom: 1px solid rgba(212,96,10,.25);
+  padding: .75rem;
+  font-family: 'Cinzel', serif;
+  font-size: .85rem; letter-spacing: .12em;
+  color: var(--cream); text-align: center;
+}
+.sched-slot {
+  padding: .7rem .9rem;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  min-height: 64px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.sched-slot.dim { opacity: .3; }
+.sched-time {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .6rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--stone); margin-bottom: .25rem;
+}
+.sched-class {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .82rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--cream); line-height: 1.25;
+}
+.sched-class.orange { color: var(--flame); }
+.sched-class.gold   { color: var(--saffron); }
+.sched-class.green  { color: var(--canopy); }
+.sched-note {
+  margin-top: 1rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .68rem; letter-spacing: .18em; text-transform: uppercase;
+  color: var(--stone);
+}
+.sched-note a { color: var(--sunrise); text-decoration: none; }
+
+/* ══════════════════════════════════════
+   DISCIPLINES
+══════════════════════════════════════ */
+.disciplines-section {
+  background: var(--black);
+  border-top: 1px solid rgba(255,255,255,.04);
+}
+.disc-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2px; margin-top: 3.5rem;
+  background: rgba(255,255,255,.04);
+}
+.disc-card {
+  background: var(--bark);
+  padding: 2.2rem;
+  position: relative; overflow: hidden;
+  border-bottom: 2px solid transparent;
+  transition: background .3s, border-color .3s;
+}
+.disc-card:hover {
+  background: var(--charcoal);
+  border-bottom-color: var(--sunrise);
+}
+.disc-num {
+  font-family: 'Cinzel', serif; font-size: 3.5rem;
+  color: rgba(255,255,255,.04); line-height: 1;
+  position: absolute; top: 1rem; right: 1.2rem;
+  transition: color .3s;
+}
+.disc-card:hover .disc-num { color: rgba(212,96,10,.06); }
+.disc-title {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem; letter-spacing: .06em;
+  color: var(--cream); margin-bottom: .7rem;
+}
+.disc-text {
+  font-size: .88rem; line-height: 1.85;
+  color: rgba(245,237,224,.5);
+}
+
+/* ══════════════════════════════════════
+   CTA BAND
+══════════════════════════════════════ */
+.cta-band {
+  background: linear-gradient(135deg, var(--forest) 0%, var(--jungle) 50%, var(--forest) 100%);
+  border-top: 1px solid rgba(240,168,48,.15);
+  border-bottom: 1px solid rgba(240,168,48,.15);
+  padding: 4.5rem 5vw;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.cta-band::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    45deg, transparent, transparent 20px,
+    rgba(240,168,48,.02) 20px, rgba(240,168,48,.02) 21px
+  );
+  pointer-events: none;
+}
+.cta-band-inner { position: relative; z-index: 2; }
+.cta-band h2 {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(1.6rem, 4.5vw, 2.8rem);
+  color: var(--white); letter-spacing: .06em;
+  line-height: 1.2; margin-bottom: .8rem;
+}
+.cta-band p {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .88rem; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(255,255,255,.55); margin-bottom: 2rem;
+}
+.btn-gold {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .78rem; letter-spacing: .25em; text-transform: uppercase;
+  background: var(--saffron); color: var(--black);
+  border: none; padding: 1rem 2.5rem;
+  border-radius: 2px; cursor: pointer;
+  font-weight: 700; text-decoration: none; display: inline-block;
+  transition: background .2s, transform .15s;
+  border-bottom: 2px solid rgba(0,0,0,.2);
+}
+.btn-gold:hover { background: var(--flame); color: var(--white); transform: translateY(-2px); }
+
+/* ══════════════════════════════════════
+   CONTACT
+══════════════════════════════════════ */
+.contact-section {
+  background: var(--ink);
+  border-top: 1px solid rgba(255,255,255,.04);
+}
+.contact-grid {
+  display: grid; grid-template-columns: 1fr 1.2fr; gap: 5rem;
+  align-items: start;
+}
+.contact-detail {
+  display: flex; gap: 1rem; margin-top: 1.6rem; align-items: flex-start;
+}
+.cd-icon {
+  width: 32px; height: 32px; flex-shrink: 0;
+  border: 1px solid rgba(212,96,10,.3);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--sunrise); font-family: 'Barlow Condensed', sans-serif;
+  font-size: .75rem; letter-spacing: .05em; margin-top: 2px;
+}
+.cd-body label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .6rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--stone); display: block; margin-bottom: 3px;
+}
+.cd-body span, .cd-body a {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1rem; letter-spacing: .08em;
+  color: var(--cream); text-decoration: none; line-height: 1.5;
+  transition: color .2s;
+}
+.cd-body a:hover { color: var(--saffron); }
+
+/* Form */
+.form-h {
+  font-family: 'Cinzel', serif;
+  font-size: 1.3rem; letter-spacing: .08em;
+  color: var(--cream); margin-bottom: 1.8rem;
+}
+.form-row {
+  display: grid; grid-template-columns: 1fr 1fr; gap: .9rem;
+  margin-bottom: .9rem;
+}
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+.form-group label {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .6rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--stone);
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  background: rgba(255,255,255,.03);
+  border: none;
+  border-bottom: 1px solid rgba(212,96,10,.25);
+  border-radius: 0;
+  color: var(--cream); padding: .7rem .8rem;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .9rem; letter-spacing: .08em;
+  outline: none; transition: border-color .2s, background .2s;
+  -webkit-appearance: none;
+}
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-bottom-color: var(--saffron);
+  background: rgba(212,96,10,.04);
+}
+.form-group select { cursor: pointer; }
+.form-group select option { background: var(--ink); }
+.form-group textarea { resize: none; min-height: 90px; }
+.form-note {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .65rem; letter-spacing: .15em; text-transform: uppercase;
+  color: rgba(212,96,10,.4); margin: .6rem 0 1.5rem;
+}
+.form-submit button {
+  width: 100%;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .78rem; letter-spacing: .28em; text-transform: uppercase;
+  background: var(--sunrise); color: var(--white); border: none;
+  padding: 1rem 2rem; cursor: pointer; border-radius: 2px;
+  border-bottom: 2px solid rgba(0,0,0,.25);
+  transition: background .2s, transform .15s;
+}
+.form-submit button:hover { background: var(--flame); transform: translateY(-1px); }
+
+/* ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ */
+footer {
+  background: var(--black);
+  border-top: 1px solid rgba(255,255,255,.05);
+  padding: 3rem 5vw;
+}
+.footer-inner {
+  max-width: 1100px; margin: 0 auto;
+  display: flex; flex-wrap: wrap; gap: 1.5rem;
+  align-items: center; justify-content: space-between;
+}
+.footer-logo-wrap {
+  display: flex; align-items: center; gap: 10px;
+}
+.footer-logo-img {
+  width: 38px; height: 38px;
+  border-radius: 50%; object-fit: cover;
+  opacity: .7;
+}
+.footer-logo-text {
+  font-family: 'Cinzel', serif; font-size: .9rem; letter-spacing: .1em;
+  color: rgba(245,237,224,.3); text-decoration: none;
+}
+.footer-copy {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: .6rem; letter-spacing: .18em; text-transform: uppercase;
+  color: rgba(255,255,255,.18); text-align: center; line-height: 1.8;
+}
+.footer-copy a { color: rgba(212,96,10,.5); text-decoration: none; }
+.footer-socials { display: flex; gap: .8rem; }
+.footer-socials a {
+  width: 34px; height: 34px;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--stone); font-family: 'Barlow Condensed', sans-serif;
+  font-size: .72rem; letter-spacing: .05em; text-transform: uppercase;
+  text-decoration: none; transition: border-color .2s, color .2s;
+}
+.footer-socials a:hover { border-color: var(--saffron); color: var(--saffron); }
+
+/* ══════════════════════════════════════
+   SCROLL ANIMATIONS
+══════════════════════════════════════ */
+.reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .65s ease, transform .65s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+.reveal-left {
+  opacity: 0; transform: translateX(-20px);
+  transition: opacity .65s ease, transform .65s ease;
+}
+.reveal-left.visible { opacity: 1; transform: none; }
+
+/* ══════════════════════════════════════
+   MOBILE — FULL RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 900px) {
+  .about-grid, .contact-grid {
+    grid-template-columns: 1fr; gap: 2.5rem;
+  }
+  .schedule-top {
+    grid-template-columns: 1fr; gap: 2rem;
+  }
+}
+@media (max-width: 640px) {
+  .section-inner { padding: 4rem 5vw; }
+  .hero-content { padding: 2rem 5vw; }
+  .form-row { grid-template-columns: 1fr; }
+  .about-techniques { grid-template-columns: 1fr; }
+  .disc-grid { grid-template-columns: 1fr; gap: 1px; }
+  .cta-band { padding: 3.5rem 5vw; }
+  .footer-inner { flex-direction: column; align-items: center; text-align: center; }
+  .trainer-card { padding: 2rem; }
+  .about-panel { padding: 1.8rem; }
+}
+@media (max-width: 480px) {
+  .hero-h1 { font-size: clamp(2.4rem, 11vw, 3.5rem); }
+  .nav-logo-text { font-size: .78rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════ NAV ══════ -->
+<nav id="mainNav">
+  <div class="nav-inner">
+    <div class="nav-logo-wrap">
+      <img src="logo_koh.png" alt="KOH Muay Thai Logo" class="nav-logo-img">
+      <a href="#" class="nav-logo-text">
+        KOH Muay Thai
+        <span>Lutz, Florida</span>
+      </a>
+    </div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#trainer">Trainer</a></li>
+      <li><a href="#schedule">Schedule</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="nav-cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Free Trial</button>
+    <button class="nav-burger" id="burgerBtn" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<nav class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="#about"     onclick="closeMobileMenu()">About</a></li>
+    <li><a href="#trainer"   onclick="closeMobileMenu()">Trainer</a></li>
+    <li><a href="#schedule"  onclick="closeMobileMenu()">Schedule</a></li>
+    <li><a href="#contact"   onclick="closeMobileMenu()">Contact</a></li>
+  </ul>
+  <a href="#contact" class="mobile-cta" onclick="closeMobileMenu()">Claim Free Trial</a>
+</nav>
+
+<!-- ══════ HERO ══════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-top-trim"></div>
+
+  <div class="hero-content">
+    <!-- LOGO -->
+    <div class="hero-logo-wrap">
+      <img src="logo_koh.png" alt="KOH Muay Thai and Fitness" class="hero-logo-img">
+      <div class="hero-logo-ornament">
+        <div class="hero-logo-ornament-gem"></div>
+      </div>
+    </div>
+
+    <div class="hero-eyebrow">Lutz, Florida · Est. 2020</div>
+
+    <h1 class="hero-h1">
+      KOH MUAY THAI
+      <span class="lutz-word">Lutz</span>
+    </h1>
+
+    <p class="hero-sub">Muay Thai · Kickboxing · MMA · Krav Maga · Kids Classes</p>
+
+    <div class="hero-divider">
+      <span>✦</span>
+    </div>
+
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Claim Free Trial</a>
+      <a href="#schedule" class="btn-secondary">View Schedule</a>
+    </div>
+  </div>
+
+  <!-- Decorative bottom wave matching green of logo -->
+  <div class="hero-bottom">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none"
+         xmlns="http://www.w3.org/2000/svg"
+         style="display:block;width:100%;height:60px;">
+      <path d="M0,40 C240,80 480,0 720,40 C960,80 1200,10 1440,40 L1440,80 L0,80 Z"
+            fill="var(--ink)"/>
+    </svg>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-track">
+    <span class="ticker-item">Muay Thai</span>
+    <span class="ticker-item">Kickboxing</span>
+    <span class="ticker-item">MMA Training</span>
+    <span class="ticker-item">Krav Maga</span>
+    <span class="ticker-item">Kids Classes</span>
+    <span class="ticker-item">All Levels Welcome</span>
+    <span class="ticker-item">Free Trial Class</span>
+    <span class="ticker-item">900–1200 Cal / Class</span>
+    <span class="ticker-item">Lutz, FL 33549</span>
+    <span class="ticker-item">Muay Thai</span>
+    <span class="ticker-item">Kickboxing</span>
+    <span class="ticker-item">MMA Training</span>
+    <span class="ticker-item">Krav Maga</span>
+    <span class="ticker-item">Kids Classes</span>
+    <span class="ticker-item">All Levels Welcome</span>
+    <span class="ticker-item">Free Trial Class</span>
+    <span class="ticker-item">900–1200 Cal / Class</span>
+    <span class="ticker-item">Lutz, FL 33549</span>
+  </div>
+</div>
+
+<!-- ══════ ABOUT ══════ -->
+<section class="about-section" id="about">
+  <div class="section-inner">
+    <div class="about-grid">
+      <div class="reveal">
+        <div class="section-tag">About KOH</div>
+        <h2 class="section-h2">About<br><em>KOH Muay Thai</em></h2>
+        <p class="about-body">
+          KOH Muay Thai Instructors <strong>love, respect, and believe in their Nak Muays.</strong>
+          <br><br>
+          KOH Muay Thai Lutz strives to continue the <strong>traditional Thai methods</strong> in each class, paying special attention to emphasize devotion and respect to the participant and the sport as well. Students, also known as <strong>Nak Muays</strong>, are an integral part of the KOH Muay Thai community and family when they become a member. In turn, the students give each trainer full respect, commitment, and devotion — and it is respected in return.
+          <br><br>
+          Muay Thai is an ancient martial art originating from Thailand, dating back to the 16th century. Also known as <strong>"The Art of Eight Limbs,"</strong> Muay Thai combines the use of fists, feet, knees, and elbows to create a powerful and efficient fighting system. Training in Muay Thai helps develop important life skills like perseverance, focus, and confidence.
+        </p>
+        <ul class="about-techniques">
+          <li>Stances and footwork</li>
+          <li>Punching and kicking techniques</li>
+          <li>Defense and counterattack strategies</li>
+          <li>Conditioning drills and bag work</li>
+          <li>Clinching and takedown techniques</li>
+          <li>Traditional Muay Thai forms and rituals</li>
+        </ul>
+        <div class="about-cta">
+          <a href="#contact" class="btn-primary">Contact Us Today</a>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay:.15s;">
+        <div class="about-panel">
+          <div class="about-stat">
+            <div class="about-stat-num">900<span>–</span>1200</div>
+            <div class="about-stat-label">Calories burned per class</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat-num">16<span>th</span></div>
+            <div class="about-stat-label">Century — Origin of Muay Thai</div>
+          </div>
+          <div class="about-stat">
+            <div class="about-stat-num">8</div>
+            <div class="about-stat-label">Limbs — Fists, Elbows, Knees, Kicks</div>
+          </div>
+          <div class="about-location">
+            <strong>1930 Land O Lakes Blvd, Suite #7</strong><br>
+            Lutz, FL 33549<br><br>
+            Also visit:<br>
+            <strong>5844 Main St, New Port Richey, FL 34652</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ TRAINER ══════ -->
+<section class="trainer-section" id="trainer">
+  <div class="section-inner">
+    <div class="section-tag">The Instructor</div>
+    <h2 class="section-h2">Meet Your<br><em>Trainer</em></h2>
+
+    <div class="trainer-card reveal">
+      <div class="trainer-num">Kru</div>
+      <div class="trainer-role">Head Instructor · KOH Muay Thai Lutz</div>
+      <div class="trainer-name">Kru Jay</div>
+      <div class="trainer-divider"></div>
+      <p class="trainer-bio">
+        Our expert instructor will guide you through a <strong>comprehensive and accommodating training program,</strong> tailored to your fitness level and goals. KOH Muay Thai Lutz strives to continue the traditional Thai methods in each class, paying special attention to emphasize <strong>devotion and respect</strong> to the participant and the sport as well.
+        <br><br>
+        Students are an integral part of the KOH Muay Thai community and family when they become a member. In turn, the students give their trainer full respect, commitment, and devotion — and it is respected in return.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ SCHEDULE ══════ -->
+<section class="schedule-section" id="schedule">
+  <div class="section-inner">
+    <div class="section-tag">Train Every Day</div>
+    <h2 class="section-h2">Class<br><em>Schedule</em></h2>
+
+    <div class="schedule-top">
+      <div class="reveal">
+        <div class="hours-label">Hours of Operation</div>
+        <div class="hours-row">
+          <span class="hours-day">Mon – Thu</span>
+          <span class="hours-time">9:30 AM – 7:30 PM</span>
+        </div>
+        <div class="hours-row">
+          <span class="hours-day">Friday</span>
+          <span class="hours-time">9:30 AM – 7:30 PM</span>
+        </div>
+        <div class="hours-row">
+          <span class="hours-day">Saturday</span>
+          <span class="hours-time">10:00 AM – Noon</span>
+        </div>
+        <div class="hours-row">
+          <span class="hours-day">Sunday</span>
+          <span class="hours-time closed">Closed</span>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay:.1s;">
+        <div class="hours-label">Location</div>
+        <div style="font-family:'Cinzel',serif;font-size:1.3rem;letter-spacing:.06em;color:var(--cream);line-height:1.4;margin-top:.8rem;">
+          1930 Land O Lakes Blvd<br>
+          Suite #7 · Lutz, FL 33549
+        </div>
+        <a href="tel:7277170452"
+           style="display:inline-block;margin-top:1.2rem;font-family:'Cinzel',serif;font-size:1.5rem;letter-spacing:.08em;color:var(--sunrise);text-decoration:none;">
+          (727) 717-0452
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll hint on mobile -->
+    <p style="font-family:'Barlow Condensed',sans-serif;font-size:.65rem;letter-spacing:.25em;text-transform:uppercase;color:var(--stone);margin-bottom:.8rem;">
+      ← Scroll to see full schedule
+    </p>
+
+    <div class="sched-wrap reveal">
+      <div class="sched-grid">
+        <!-- MON -->
+        <div class="sched-col">
+          <div class="sched-header">Mon</div>
+          <div class="sched-slot">
+            <div class="sched-time">9:00 – 9:45am</div>
+            <div class="sched-class orange">Cardio MT</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">10:00 – 11:00am</div>
+            <div class="sched-class">All Levels</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">4:30 – 5:30pm</div>
+            <div class="sched-class">Begin. / Interm.</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">5:30 – 6:30pm</div>
+            <div class="sched-class gold">Kids Class</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">6:30 – 7:30pm</div>
+            <div class="sched-class">All Levels</div>
+          </div>
+        </div>
+        <!-- TUE -->
+        <div class="sched-col">
+          <div class="sched-header">Tue</div>
+          <div class="sched-slot dim"><div class="sched-class" style="color:rgba(255,255,255,.12);font-size:.75rem;">—</div></div>
+          <div class="sched-slot dim"><div class="sched-class" style="color:rgba(255,255,255,.12);font-size:.75rem;">—</div></div>
+          <div class="sched-slot">
+            <div class="sched-time">4:30 – 5:30pm</div>
+            <div class="sched-class">All Levels</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">5:30 – 6:30pm</div>
+            <div class="sched-class gold">Kids Class</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">6:30 – 7:30pm</div>
+            <div class="sched-class">All Levels</div>
+          </div>
+        </div>
+        <!-- WED -->
+        <div class="sched-col">
+          <div class="sched-header">Wed</div>
+          <div class="sched-slot">
+            <div class="sched-time">9:00 – 9:45am</div>
+            <div class="sched-class orange">Cardio MT</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">10:00 – 11:00am</div>
+            <div class="sched-class">All Levels</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">4:30 – 5:30pm</div>
+            <div class="sched-class">All Levels</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">5:30 – 6:30pm</div>
+            <div class="sched-class gold">Kids Class</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">6:30 – 7:30pm</div>
+            <div class="sched-class">Begin. / Interm.</div>
+          </div>
+        </div>
+        <!-- THU -->
+        <div class="sched-col">
+          <div class="sched-header">Thu</div>
+          <div class="sched-slot dim"><div class="sched-class" style="color:rgba(255,255,255,.12);font-size:.75rem;">—</div></div>
+          <div class="sched-slot dim"><div class="sched-class" style="color:rgba(255,255,255,.12);font-size:.75rem;">—</div></div>
+          <div class="sched-slot">
+            <div class="sched-time">4:30 – 5:30pm</div>
+            <div class="sched-class">Begin. / Interm.</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">5:30 – 6:30pm</div>
+            <div class="sched-class gold">Kids Class</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">6:30 – 7:30pm</div>
+            <div class="sched-class">All Levels</div>
+          </div>
+        </div>
+        <!-- FRI -->
+        <div class="sched-col">
+          <div class="sched-header">Fri</div>
+          <div class="sched-slot">
+            <div class="sched-time">9:00 – 9:45am</div>
+            <div class="sched-class orange">Cardio MT</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">10:00 – 11:00am</div>
+            <div class="sched-class">All Levels</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">4:30 – 5:30pm</div>
+            <div class="sched-class">All Levels</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">5:30 – 6:30pm</div>
+            <div class="sched-class gold">Kids Class</div>
+          </div>
+          <div class="sched-slot">
+            <div class="sched-time">6:30 – 7:30pm</div>
+            <div class="sched-class">Begin. / Interm.</div>
+          </div>
+        </div>
+        <!-- SAT -->
+        <div class="sched-col">
+          <div class="sched-header">Sat</div>
+          <div class="sched-slot" style="min-height:320px;">
+            <div class="sched-time">10:00am – Noon</div>
+            <div class="sched-class green">Open Training</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="sched-note">
+      * Schedule subject to change — call
+      <a href="tel:7277170452">(727) 717-0452</a> to confirm
+    </p>
+  </div>
+</section>
+
+<!-- ══════ DISCIPLINES ══════ -->
+<section class="disciplines-section" id="disciplines">
+  <div class="section-inner">
+    <div class="section-tag">What We Train</div>
+    <h2 class="section-h2">Our<br><em>Classes</em></h2>
+    <div class="disc-grid">
+      <div class="disc-card reveal">
+        <div class="disc-num">01</div>
+        <div class="disc-title">Muay Thai</div>
+        <p class="disc-text">The Science of Eight Limbs. Combining fists, feet, knees, and elbows — a powerful and efficient fighting system rooted in discipline, respect, and self-control.</p>
+      </div>
+      <div class="disc-card reveal" style="transition-delay:.07s;">
+        <div class="disc-num">02</div>
+        <div class="disc-title">Kickboxing</div>
+        <p class="disc-text">High-intensity striking with full-body conditioning. Build explosive power, elite cardio, and real-world fighting instincts at every experience level.</p>
+      </div>
+      <div class="disc-card reveal" style="transition-delay:.14s;">
+        <div class="disc-num">03</div>
+        <div class="disc-title">MMA</div>
+        <p class="disc-text">Mixed Martial Arts training that integrates striking, clinch work, and grappling into one complete combat system for well-rounded fighters.</p>
+      </div>
+      <div class="disc-card reveal" style="transition-delay:.21s;">
+        <div class="disc-num">04</div>
+        <div class="disc-title">Krav Maga</div>
+        <p class="disc-text">Real-world self-defense built on practical, effective techniques. Designed for all fitness levels — no experience necessary.</p>
+      </div>
+      <div class="disc-card reveal" style="transition-delay:.28s;">
+        <div class="disc-num">05</div>
+        <div class="disc-title">Cardio Muay Thai</div>
+        <p class="disc-text">Burn an average of 900–1200 calories per session. A comprehensive and accommodating training program tailored to your fitness level and goals.</p>
+      </div>
+      <div class="disc-card reveal" style="transition-delay:.35s;">
+        <div class="disc-num">06</div>
+        <div class="disc-title">Kids Classes</div>
+        <p class="disc-text">Age-appropriate Muay Thai and fitness for young athletes. Builds the physical and mental benefits of Muay Thai training in a safe, supportive environment.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ CTA BAND ══════ -->
+<div class="cta-band">
+  <div class="cta-band-inner">
+    <h2>Your First Class Is Free.</h2>
+    <p>Join us to experience the physical and mental benefits of Muay Thai training.</p>
+    <a href="#contact" class="btn-gold">Claim Free Trial</a>
+  </div>
+</div>
+
+<!-- ══════ CONTACT ══════ -->
+<section class="contact-section" id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div class="reveal">
+        <div class="section-tag">Get In Touch</div>
+        <h2 class="section-h2">Contact<br><em>KOH Muay Thai</em></h2>
+        <p style="font-size:.9rem;color:rgba(245,237,224,.5);line-height:1.8;margin:1.2rem 0 1.5rem;">
+          Use our contact form to get in touch, or visit us at our location below.
+        </p>
+
+        <div class="contact-detail">
+          <div class="cd-icon">📍</div>
+          <div class="cd-body">
+            <label>Our Location</label>
+            <span>1930 Land O Lakes Blvd, Suite #7<br>Lutz, FL 33549</span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="cd-icon">☎</div>
+          <div class="cd-body">
+            <label>Phone</label>
+            <a href="tel:7277170452">(727) 717-0452</a>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="cd-icon">IG</div>
+          <div class="cd-body">
+            <label>Instagram</label>
+            <a href="https://www.instagram.com/kohmuaythailutz" target="_blank">@kohmuaythailutz</a>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="cd-icon">FB</div>
+          <div class="cd-body">
+            <label>Facebook</label>
+            <a href="https://www.facebook.com/Koh-muay-thai-lutz-113125830863954/" target="_blank">KOH Muay Thai Lutz</a>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="cd-icon">↗</div>
+          <div class="cd-body">
+            <label>New Port Richey Location</label>
+            <a href="#" target="_blank">5844 Main St, NPR 34652</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal" style="transition-delay:.15s;">
+        <div class="section-tag">Free Trial Request</div>
+        <div class="form-h">Learn More About Our Classes</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Full Name *</label>
+            <input type="text" placeholder="Full Name">
+          </div>
+          <div class="form-group">
+            <label>Email Address *</label>
+            <input type="email" placeholder="Email Address">
+          </div>
+        </div>
+        <div class="form-group" style="margin-bottom:.9rem;">
+          <label>Phone *</label>
+          <input type="tel" placeholder="Phone">
+        </div>
+        <div class="form-group" style="margin-bottom:.9rem;">
+          <label>Interested In</label>
+          <select>
+            <option value="all">All Level Classes</option>
+            <option>Muay Thai</option>
+            <option>Kickboxing</option>
+            <option>Cardio Muay Thai</option>
+            <option>Krav Maga</option>
+            <option>MMA</option>
+            <option>Kids Classes</option>
+            <option>Private Training</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Additional Details *</label>
+          <textarea placeholder="Tell us about your experience level or any questions..."></textarea>
+        </div>
+        <p class="form-note">ALL unsolicited emails will be reported as SPAM.</p>
+        <div class="form-submit">
+          <button type="submit">Contact Us</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════ FOOTER ══════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo-wrap">
+      <img src="logo_koh.png" alt="KOH Logo" class="footer-logo-img">
+      <span class="footer-logo-text">KOH Muay Thai</span>
+    </div>
+    <div class="footer-copy">
+      All Rights Reserved © 2026 Koh Muay Thai in Lutz, FL<br>
+      1930 Land O Lakes Blvd., Lutz, FL 33549<br>
+      <a href="#">Privacy Policy</a> &nbsp;|&nbsp; <a href="#">Terms of Use</a>
+    </div>
+    <div class="footer-socials">
+      <a href="https://www.facebook.com/Koh-muay-thai-lutz-113125830863954/" target="_blank">fb</a>
+      <a href="https://www.instagram.com/kohmuaythailutz" target="_blank">ig</a>
+      <a href="https://www.yelp.com/biz/koh-muay-thai-lutz" target="_blank">y!</a>
+      <a href="https://g.page/kohmuaythailutz" target="_blank">G</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ── Mobile menu ──────────────────────────────────
+const burgerBtn   = document.getElementById('burgerBtn');
+const mobileMenu  = document.getElementById('mobileMenu');
+burgerBtn.addEventListener('click', () => {
+  const open = mobileMenu.classList.toggle('open');
+  burgerBtn.setAttribute('aria-expanded', open);
+  // animate burger to X
+  const spans = burgerBtn.querySelectorAll('span');
+  if (open) {
+    spans[0].style.transform = 'rotate(45deg) translate(5px,5px)';
+    spans[1].style.opacity = '0';
+    spans[2].style.transform = 'rotate(-45deg) translate(5px,-5px)';
+  } else {
+    spans.forEach(s => { s.style.transform=''; s.style.opacity=''; });
+  }
+});
+function closeMobileMenu() {
+  mobileMenu.classList.remove('open');
+  burgerBtn.querySelectorAll('span').forEach(s => { s.style.transform=''; s.style.opacity=''; });
+}
+// Close on outside click
+document.addEventListener('click', e => {
+  if (!mobileMenu.contains(e.target) && !burgerBtn.contains(e.target)) {
+    mobileMenu.classList.remove('open');
+  }
+});
+
+// ── Scroll reveal ────────────────────────────────
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      obs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal, .reveal-left').forEach(el => obs.observe(el));
+
+// ── Nav background on scroll ─────────────────────
+const nav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+  nav.style.borderBottomColor = window.scrollY > 50
+    ? 'rgba(212,96,10,.3)' : 'rgba(212,96,10,.15)';
+}, { passive: true });
+
+// ── Smooth scroll for all anchor links ───────────
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) {
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+</script>
+</body>
+</html>
